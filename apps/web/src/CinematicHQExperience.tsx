@@ -573,12 +573,12 @@ export const CinematicHQExperience: React.FC<CinematicHQExperienceProps> = ({ on
               </span>
             </div>
 
-            <form onSubmit={handleAuthenticate} className="space-y-4">
+            <form onSubmit={handleAuthenticate} autoComplete="off" className="space-y-4">
 
               {accessDenied && (
                 <div className="p-3.5 rounded-xl bg-rose-500/20 border border-rose-500/50 text-rose-200 text-xs font-mono font-bold flex items-center gap-2 animate-pulse">
                   <XCircle className="w-4 h-4 text-rose-400 flex-shrink-0" />
-                  <span>CREDANCIALES NO VÁLIDAS · Usa Usuario: jedasamu230@gmail.com | Clave: Jesus$12345</span>
+                  <span>CREDANCIALES NO VÁLIDAS · Verifique su correo y contraseña</span>
                 </div>
               )}
 
@@ -594,7 +594,8 @@ export const CinematicHQExperience: React.FC<CinematicHQExperienceProps> = ({ on
                       try { cyberAudio.playTypingPulse(); } catch (err) { }
                     }}
                     required
-                    placeholder="jedasamu230@gmail.com"
+                    autoComplete="off"
+                    placeholder="correo@empresa.com"
                     className="w-full pl-10 pr-4 py-3 bg-[#060A12]/90 border border-cyan-500/40 rounded-xl text-xs font-mono font-bold text-white focus:border-cyan-400 focus:shadow-[0_0_20px_rgba(6,182,212,0.4)] focus:outline-none transition-all"
                   />
                 </div>
@@ -612,6 +613,7 @@ export const CinematicHQExperience: React.FC<CinematicHQExperienceProps> = ({ on
                       try { cyberAudio.playTypingPulse(); } catch (err) { }
                     }}
                     required
+                    autoComplete="new-password"
                     placeholder="••••••••"
                     className="w-full pl-10 pr-4 py-3 bg-[#060A12]/90 border border-cyan-500/40 rounded-xl text-xs font-mono font-bold text-white focus:border-cyan-400 focus:shadow-[0_0_20px_rgba(6,182,212,0.4)] focus:outline-none transition-all"
                   />
