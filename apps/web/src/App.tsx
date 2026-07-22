@@ -399,7 +399,7 @@ export default function App() {
 
     // Direct Live Apify Google Places Extraction
     try {
-      const apifyRes = await fetch(`https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items?token=${import.meta.env.VITE_APIFY_TOKEN || ''}`, {
+      const apifyRes = await fetch(`https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items?token=${(import.meta as any).env?.VITE_APIFY_TOKEN || ''}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
