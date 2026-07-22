@@ -1,0 +1,179 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Company {
+  id                String             @id @default(uuid())
+  name              String
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  users             User[]
+  prospects         Prospect[]
+  workflows         Workflow[]
+  agents            Agent[]
+  whatsappInstances WhatsappInstance[]
+  memberships       Membership[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("MEMBER") // ADMIN, MEMBER, OWNER
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Membership {
+  id        String    @id @default(uuid())
+  companyId String
+  company   Company   @relation(fields: [companyId], references: [id])
+  plan      String    @default("FREE") // FREE, PRO, ENTERPRISE
+  status    String    @default("ACTIVE")
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Prospect {
+  id           String          @id @default(uuid())
+  companyId    String
+  company      Company         @relation(fields: [companyId], references: [id])
+  name         String
+  contactName  String?
+  phone        String?
+  email        String?
+  website      String?
+  industry     String?
+  location     String?
+  sourceId     String?
+  source       ProspectSource? @relation(fields: [sourceId], references: [id])
+  score        Int             @default(0) // 0-100
+  status       String          @default("NEW") // NEW, CONTACTED, QUALIFIED, UNQUALIFIED, CLOSED_WON, CLOSED_LOST
+  signals      SocialSignal[]
+  opportunities Opportunity[]
+  lastActivity DateTime        @default(now())
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model ProspectSource {
+  id        String     @id @default(uuid())
+  name      String // Google Maps, LinkedIn, Web Scraping
+  prospects Prospect[]
+}
+
+model SocialSignal {
+  id          String   @id @default(uuid())
+  prospectId  String
+  prospect    Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+  type        String // Job Hiring, Tech Stack, Funding, Post Activity
+  description String
+  createdAt   DateTime @default(now())
+}
+
+model Opportunity {
+  id         String   @id @default(uuid())
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+  title      String
+  value      Float?
+  stage      String // DISCOVERY, PRESENTATION, NEGOTIATION, WON, LOST
+  confidence Int      @default(50) // Percentage
+  aiAnalysis Json? // AI summary details
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model WhatsappInstance {
+  id        String   @id @default(uuid())
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id])
+  name      String
+  phone     String?
+  status    String   @default("DISCONNECTED") // CONNECTED, DISCONNECTED, PAUSED
+  qrCode    String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  agents    Agent[]
+}
+
+model Agent {
+  id                 String            @id @default(uuid())
+  companyId          String
+  company            Company           @relation(fields: [companyId], references: [id])
+  whatsappInstanceId String?
+  whatsappInstance   WhatsappInstance? @relation(fields: [whatsappInstanceId], references: [id])
+  name               String
+  type               String // SALES, SUPPORT, BOOKING, LEAD_GEN
+  color              String? // Custom neon color hex (e.g. #8B5CF6)
+  prompt             String            @db.Text
+  objective          String            @db.Text
+  schedule           String? // Time window e.g., "09:00-18:00"
+  status             String            @default("INACTIVE") // ACTIVE, INACTIVE
+  sessions           AgentSession[]
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+}
+
+model AgentSession {
+  id           String   @id @default(uuid())
+  agentId      String
+  agent        Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  contactPhone String
+  status       String   @default("ACTIVE")
+  messages     Json[] // Historic of messages in this session
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Workflow {
+  id            String        @id @default(uuid())
+  companyId     String
+  company       Company       @relation(fields: [companyId], references: [id])
+  name          String
+  type          String // DISCOVERY, ENRICHMENT, WHATSAPP, REPORT
+  status        String        @default("INACTIVE") // ACTIVE, INACTIVE
+  n8nWebhookUrl String?
+  lastRun       DateTime?
+  nextRun       DateTime?
+  runs          WorkflowRun[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model WorkflowRun {
+  id         String   @id @default(uuid())
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  status     String // SUCCESS, FAILED, RUNNING
+  error      String?  @db.Text
+  durationMs Int?
+  createdAt  DateTime @default(now())
+}
+
+model Activity {
+  id          String   @id @default(uuid())
+  companyId   String
+  userId      String?
+  type        String // LEAD_CREATED, LEAD_SCORED, WHATSAPP_SENT, AGENT_TRIGGERED
+  description String
+  createdAt   DateTime @default(now())
+}
+
+model Report {
+  id        String   @id @default(uuid())
+  companyId String
+  title     String
+  type      String // DAILY, WEEKLY, MONTHLY
+  data      Json
+  createdAt DateTime @default(now())
+}
