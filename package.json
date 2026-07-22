@@ -12,6 +12,7 @@
     "dev:web": "npm run dev -w apps/web",
     "dev:api": "npm run dev -w apps/api",
     "build": "npm run build --workspaces --if-present",
+    "vercel-build": "npm run build --workspace=@leadforge/web",
     "install:all": "npm install",
     "db:generate": "npm run generate -w packages/database",
     "db:push": "npm run push -w packages/database"
