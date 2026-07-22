@@ -56,8 +56,8 @@ import {
 } from 'recharts';
 import { Prospect, WhatsappInstance, Agent, Workflow, WorkflowRun, Activity, AIScoringResult } from '@leadforge/shared';
 
-// API Service URL (Proxied through Vite)
-const API_URL = '';
+// API Service URL (Default to Hostinger VPS Backend)
+const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://2.25.155.9:3001';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
