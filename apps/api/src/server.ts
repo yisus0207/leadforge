@@ -122,12 +122,8 @@ server.post('/api/auth/login', async (request, reply) => {
 
 // 2. Prospects Routing
 server.get('/api/prospects', async (request, reply) => {
-  // Real implementation resolves companyId from Auth header. For demo, we filter by default company
-  const companyId = 'company-default-123';
-
   if (usePrisma) {
     const list = await prisma.prospect.findMany({
-      where: { companyId },
       orderBy: { score: 'desc' }
     });
     return list;
