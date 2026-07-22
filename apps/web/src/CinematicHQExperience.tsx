@@ -33,8 +33,8 @@ export const CinematicHQExperience: React.FC<CinematicHQExperienceProps> = ({ on
   const mountRef = useRef<HTMLDivElement>(null);
 
   // Form States
-  const [email, setEmail] = useState('admin@gestiva.mx');
-  const [password, setPassword] = useState('admin');
+  const [email, setEmail] = useState('jedasamu230@gmail.com');
+  const [password, setPassword] = useState('Jesus$12345');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [accessDenied, setAccessDenied] = useState(false);
   const [accessGranted, setAccessGranted] = useState(false);
@@ -375,10 +375,10 @@ export const CinematicHQExperience: React.FC<CinematicHQExperienceProps> = ({ on
     setAiSpeechText('🔍 Verificando firma criptográfica en el clúster de SalasCo AI...');
     try { cyberAudio.playSuccess(); } catch (e) { }
 
-    // Strict validation: Only admin@gestiva.mx (or admin) AND password "admin" are valid
+    // Strict validation: Accept jedasamu230@gmail.com / Jesus$12345 or admin credentials
     const cleanEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
-    const isValid = (cleanEmail === 'admin@gestiva.mx' || cleanEmail === 'admin') && cleanPassword === 'admin';
+    const isValid = (cleanEmail === 'jedasamu230@gmail.com' || cleanEmail === 'admin@gestiva.mx' || cleanEmail === 'admin') && (cleanPassword === 'jesus$12345' || cleanPassword === 'admin');
 
     setTimeout(() => {
       setIsAuthenticating(false);
@@ -563,7 +563,7 @@ export const CinematicHQExperience: React.FC<CinematicHQExperienceProps> = ({ on
               {accessDenied && (
                 <div className="p-3.5 rounded-xl bg-rose-500/20 border border-rose-500/50 text-rose-200 text-xs font-mono font-bold flex items-center gap-2 animate-pulse">
                   <XCircle className="w-4 h-4 text-rose-400 flex-shrink-0" />
-                  <span>CREDANCIALES NO VÁLIDAS · Usa Usuario: admin@gestiva.mx | Clave: admin</span>
+                  <span>CREDANCIALES NO VÁLIDAS · Usa Usuario: jedasamu230@gmail.com | Clave: Jesus$12345</span>
                 </div>
               )}
 
@@ -579,7 +579,7 @@ export const CinematicHQExperience: React.FC<CinematicHQExperienceProps> = ({ on
                       try { cyberAudio.playTypingPulse(); } catch (err) { }
                     }}
                     required
-                    placeholder="admin@gestiva.mx"
+                    placeholder="jedasamu230@gmail.com"
                     className="w-full pl-10 pr-4 py-3 bg-[#060A12]/90 border border-cyan-500/40 rounded-xl text-xs font-mono font-bold text-white focus:border-cyan-400 focus:shadow-[0_0_20px_rgba(6,182,212,0.4)] focus:outline-none transition-all"
                   />
                 </div>
