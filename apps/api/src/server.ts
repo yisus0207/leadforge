@@ -1173,9 +1173,9 @@ server.get('/api/analytics/kpis', async (request, reply) => {
     ? await prisma.agent.count({ where: { status: 'ACTIVE' } })
     : memoryDb.agents.filter(a => a.status === 'ACTIVE').length;
 
-  const hotLeads = prospects.filter(p => p.score >= 80).length;
+  const hotLeads = prospects.filter((p: any) => p.score >= 80).length;
   const todayStr = new Date().toDateString();
-  const leadsToday = prospects.filter(p => new Date(p.createdAt).toDateString() === todayStr).length;
+  const leadsToday = prospects.filter((p: any) => new Date(p.createdAt).toDateString() === todayStr).length;
 
   return {
     leadsToday,
@@ -1202,7 +1202,7 @@ server.get('/api/analytics/charts', async (request, reply) => {
   }
 
   const sourcesMap: Record<string, number> = {};
-  prospects.forEach(p => {
+  prospects.forEach((p: any) => {
     const src = p.industry || 'General';
     sourcesMap[src] = (sourcesMap[src] || 0) + 1;
   });
@@ -1214,17 +1214,17 @@ server.get('/api/analytics/charts', async (request, reply) => {
 
   const conversionRates = [
     { stage: 'Prospecto Encontrado', count: prospects.length },
-    { stage: 'Calificado por IA', count: prospects.filter(p => p.score > 0).length },
-    { stage: 'Contacto Establecido', count: prospects.filter(p => p.status === 'CONTACTED').length },
-    { stage: 'Cerrado Ganado', count: prospects.filter(p => p.status === 'CLOSED_WON').length }
+    { stage: 'Calificado por IA', count: prospects.filter((p: any) => p.score > 0).length },
+    { stage: 'Contacto Establecido', count: prospects.filter((p: any) => p.status === 'CONTACTED').length },
+    { stage: 'Cerrado Ganado', count: prospects.filter((p: any) => p.status === 'CLOSED_WON').length }
   ];
 
   const scoreDistribution = [
-    { range: '0-20', count: prospects.filter(p => p.score <= 20).length },
-    { range: '21-40', count: prospects.filter(p => p.score > 20 && p.score <= 40).length },
-    { range: '41-60', count: prospects.filter(p => p.score > 40 && p.score <= 60).length },
-    { range: '61-80', count: prospects.filter(p => p.score > 60 && p.score <= 80).length },
-    { range: '81-100', count: prospects.filter(p => p.score > 80).length }
+    { range: '0-20', count: prospects.filter((p: any) => p.score <= 20).length },
+    { range: '21-40', count: prospects.filter((p: any) => p.score > 20 && p.score <= 40).length },
+    { range: '41-60', count: prospects.filter((p: any) => p.score > 40 && p.score <= 60).length },
+    { range: '61-80', count: prospects.filter((p: any) => p.score > 60 && p.score <= 80).length },
+    { range: '81-100', count: prospects.filter((p: any) => p.score > 80).length }
   ];
 
   return {
