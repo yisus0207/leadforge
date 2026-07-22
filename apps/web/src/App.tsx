@@ -56,8 +56,8 @@ import {
 } from 'recharts';
 import { Prospect, WhatsappInstance, Agent, Workflow, WorkflowRun, Activity, AIScoringResult } from '@leadforge/shared';
 
-// API Service URL (Default to Hostinger VPS Backend)
-const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://2.25.155.9:3001';
+// API Service URL (Read strictly from Environment Variables)
+const API_URL = (import.meta as any).env?.VITE_API_URL || '';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
