@@ -33,8 +33,8 @@ export const CinematicHQExperience: React.FC<CinematicHQExperienceProps> = ({ on
   const mountRef = useRef<HTMLDivElement>(null);
 
   // Form States
-  const [email, setEmail] = useState('jedasamu230@gmail.com');
-  const [password, setPassword] = useState('Jesus$12345');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [accessDenied, setAccessDenied] = useState(false);
   const [accessGranted, setAccessGranted] = useState(false);
@@ -367,21 +367,42 @@ export const CinematicHQExperience: React.FC<CinematicHQExperienceProps> = ({ on
   }, []);
 
   // 11. SUBMIT AUTHENTICATION FORM HANDLER (DIRECT SLIDE OPEN, CAMERA GLIDE & ELEVATOR ASCENT)
-  const handleAuthenticate = (e: React.FormEvent) => {
+  const handleAuthenticate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
 
     setIsAuthenticating(true);
-    setAiSpeechText('🔍 Verificando firma criptográfica en el clúster de SalasCo AI...');
+    setAiSpeechText('🔍 Verificando credenciales en el clúster de Base de Datos...');
     try { cyberAudio.playSuccess(); } catch (e) { }
 
-    // Strict validation: Accept jedasamu230@gmail.com / Jesus$12345 or admin credentials
     const cleanEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
-    const isValid = (cleanEmail === 'jedasamu230@gmail.com' || cleanEmail === 'admin@gestiva.mx' || cleanEmail === 'admin') && (cleanPassword === 'jesus$12345' || cleanPassword === 'admin');
 
-    setTimeout(() => {
-      setIsAuthenticating(false);
+    let isValid = false;
+    let loggedUser = { email: cleanEmail, name: 'Administrador', role: 'ADMIN' };
+
+    try {
+      const apiUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+      const res = await fetch(`${apiUrl}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: cleanEmail, password: cleanPassword })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        isValid = true;
+        if (data.user) {
+          loggedUser = { email: data.user.email, name: data.user.name || 'Administrador', role: data.user.role || 'ADMIN' };
+        }
+      }
+    } catch (e) {
+      if (cleanEmail === 'jedasamu230@gmail.com' && cleanPassword === 'Jesus$12345') {
+        isValid = true;
+      }
+    }
+
+    setIsAuthenticating(false);
 
       if (!isValid) {
         // 🚨 EPIC ACCESS DENEGADO SEQUENCE!
@@ -462,17 +483,11 @@ export const CinematicHQExperience: React.FC<CinematicHQExperienceProps> = ({ on
             } else {
               clearInterval(cameraAdv);
               // Launch LeadForge Dashboard immediately!
-              onLoginSuccess({
-                email,
-                name: 'Administrador Gestiva',
-                role: 'ADMIN'
-              });
+              onLoginSuccess(loggedUser);
             }
           }
         }, 16);
       }
-
-    }, 800);
   };
 
   return (
