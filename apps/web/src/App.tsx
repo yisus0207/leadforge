@@ -2259,7 +2259,7 @@ export default function App() {
                         <label className="block text-[10px] text-slate-400 uppercase font-bold tracking-wider">Apify Scraper Token</label>
                         <input
                           type="password"
-                          value="apify_api_••••••••••••••••"
+                          value="••••••••••••••••"
                           disabled
                           className="w-full p-2.5 rounded-lg bg-[#0B1220] border border-leadforge-border text-xs text-slate-500 font-mono focus:outline-none"
                         />

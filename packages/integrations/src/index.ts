@@ -16,8 +16,8 @@ export interface ApifyScrapedLead {
 }
 
 export async function createEvolutionInstance(instanceName: string): Promise<{ success: boolean; qrCode?: string }> {
-  const evolutionApiUrl = process.env.EVOLUTION_API_URL || 'https://evolution-api-6vt4.srv1720387.hstgr.cloud';
-  const globalKey = process.env.EVOLUTION_GLOBAL_KEY || 'XiXQry7ghJHWhclG9FFeKW4joU8yNNfy';
+  const evolutionApiUrl = process.env.EVOLUTION_API_URL || '';
+  const globalKey = process.env.EVOLUTION_GLOBAL_KEY || '';
 
   try {
     const response = await fetch(`${evolutionApiUrl}/instance/create`, {
@@ -47,9 +47,9 @@ export async function createEvolutionInstance(instanceName: string): Promise<{ s
 
 // 1. WhatsApp Evolution API integration
 export async function fetchWhatsappQR(instanceName: string, forceFresh: boolean = false): Promise<EvolutionQRResponse> {
-  const evolutionApiUrl = process.env.EVOLUTION_API_URL || 'https://evolution-api-6vt4.srv1720387.hstgr.cloud';
-  const instanceApiKey = process.env.EVOLUTION_API_KEY || 'BB6FE9B78839-47F4-8F7D-14C9AC172F62';
-  const globalApiKey = process.env.EVOLUTION_GLOBAL_KEY || 'XiXQry7ghJHWhclG9FFeKW4joU8yNNfy';
+  const evolutionApiUrl = process.env.EVOLUTION_API_URL || '';
+  const instanceApiKey = process.env.EVOLUTION_API_KEY || '';
+  const globalApiKey = process.env.EVOLUTION_GLOBAL_KEY || '';
 
   const targetInstance = (instanceName && instanceName !== 'undefined') ? instanceName : 'GestiBot';
 

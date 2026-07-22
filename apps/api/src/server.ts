@@ -349,9 +349,8 @@ server.get('/api/whatsapp/instances', async (request, reply) => {
     dbInstances = memoryDb.whatsappInstances;
   }
 
-  // Live Sync with Evolution API
-  const evolutionApiUrl = process.env.EVOLUTION_API_URL || 'https://evolution-api-6vt4.srv1720387.hstgr.cloud';
-  const evolutionApiKey = process.env.EVOLUTION_GLOBAL_KEY || process.env.EVOLUTION_API_KEY || 'XiXQry7ghJHWhclG9FFeKW4joU8yNNfy';
+  const evolutionApiUrl = process.env.EVOLUTION_API_URL || '';
+  const evolutionApiKey = process.env.EVOLUTION_GLOBAL_KEY || process.env.EVOLUTION_API_KEY || '';
 
   if (evolutionApiUrl && evolutionApiKey) {
     try {
