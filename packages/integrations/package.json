@@ -5,6 +5,8 @@
   "types": "src/index.ts",
   "private": true,
   "dependencies": {
-    "@leadforge/shared": "*"
+    "@leadforge/shared": "*",
+    "qrcode": "^1.5.3",
+    "@types/qrcode": "^1.5.5"
   }
 }
